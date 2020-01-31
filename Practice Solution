@@ -1,0 +1,126 @@
+#%%
+# Escriba su codigo aqui  (Ctrl + ENTER)
+
+# Se pide al usuario el año y se validan los datos ingesados
+year_ok = False
+    
+while not year_ok:
+    year = int(input("Ingrese el año [1982-2048]: "))
+    if year < 1982 or year > 2048:
+        print("Debe de ingrese el año en el rango 1982-2048")
+        print("Intente nuevamente")
+    else:
+        year_ok = True
+        
+# Se calcula la fecha de la pascua
+# (i el dia supra 31, debe cae en el mes de Abril)
+month = "Marzo"
+a = year % 19
+b = year % 4
+c = year % 7
+d = (19 * a + 24) % 30
+e = (2 * b + 4 * c + 6 * d + 5) % 7
+day = 22 + d + e
+
+if day > 31:
+    month = "Abril"
+    day -= 31
+    
+# Se imprimen los resultados
+print("Fecha de la pascua: {} de {} de {}".format(day, month, year))
+
+#%%
+# Escriba su codigo aqui
+from random import randrange
+
+# Generamos con listas por compension las notas
+notas = [[randrange(3, 21) for i in range(3)] for i in range(12)]
+
+# Utilizando map de calcula el promedio de cada elemento de notas
+# que son sublistas de 3 elementos cada una
+promedio = list(map(lambda x: sum(x)/len(x), notas))
+
+# Se calcula el numero de aprobados con filter, buscando el numero de
+# elemenos de una lista que tendra los promedios filtrados segun el
+# criterio de promedios >= 10.5
+n_aprobados = len(list(filter(lambda x: x >= 10.5, promedio)))
+
+# Imprimos en encabezado de la tabla en el medio de un espacio de 80 columnas
+print("{:^80}".format("REGISTRO DE NOTAS"))
+print("{:^80}".format("================="))
+print("\n\t\t{:12} {:^8} {:^8} {:^8} {:^8}".format("ALUMNOS", "NOTA1", "NOTA2", "NOTA3", "PROMEDIO"))
+
+# Se impimen las notas y promedios
+# (utilizamos enumerate para el numero de alumno y zip para sacar los datos de
+# las listas notas y promedio)
+for idx, (nota, promedio) in enumerate(zip(notas, promedio)):
+    print("\t\t{:10} {:8} {:8} {:8}".format("Alumno " + str(idx+1), nota[0], nota[1], nota[2]), end='')
+    print(" {:8.1f}".format(promedio))
+else:
+    print("\nNumero de aprobados: {}/12".format(n_aprobados))
+
+#%%
+# Escriba su codigo aqui
+from random import uniform
+
+# Se genera la lista de Celsius con una lista por compension
+temp_C = [uniform(20, 29) for i in range(31)]
+# Se genera la lista de Fahrenhei con un map a partir de la lista Celsius 
+temp_F = list(map(lambda x: 9/5 * x + 32, temp_C))
+
+# Se imprime el encabezado de la lista
+print("TEMPERATURAS DE ENERO 2020")
+print()
+print("DIA    CELSIUS     FAHRENHEIT")
+
+# Se imprimen los resultados
+# (enumerate para el dia del mes, zip para extraer los datos de las listas celsius y fahrenheit)
+for idx, (C, F) in enumerate(zip(temp_C, temp_F)):
+    print("{:2}      {:.1f}°C       {:.1f}F".format(idx+1, C, F))
+
+#%%
+# Escriba su codigo aqui
+def nota2grado(nota):
+    '''
+    nota2grado(nota): Retorna el equivalente literal de una nota numerica
+    
+    Parametros:
+        - nota: int
+        
+    Uso:
+        nota2grado(15)  -> 'B'
+    '''
+    if nota > 20 or nota < 0:
+        return None
+    
+    if nota >= 18:
+        return 'A'
+    elif 14 <= nota <= 17:
+        return 'B'
+    elif 10 <= nota <= 13:
+        return 'C'
+    elif 6 <= nota <= 9:
+        return 'D'
+    else:
+        return 'F'
+    
+# MOFICIACION DEL CODIGO DE LA PREGUNTA 2
+from random import randrange
+
+notas = [[randrange(3, 21) for i in range(3)] for i in range(12)]
+promedio = list(map(lambda x: sum(x)/len(x), notas))
+n_aprobados = len(list(filter(lambda x: x >= 10.5, promedio)))
+grados = list(map(lambda x: nota2grado(x), promedio))
+
+# Imprimos en encabezado de la tabla en el medio de un espacio de 80 columnas
+print("{:^80}".format("REGISTRO DE NOTAS"))
+print("{:^80}".format("================="))
+print("\n\t\t{:12} {:^8} {:^8} {:^8} {:^8} {:^8}".format("ALUMNOS", "NOTA1", "NOTA2", "NOTA3", "PROMEDIO", "GRADO"))
+
+# Se impimen las notas y promedios
+for idx, (nota, promedio, grado) in enumerate(zip(notas, promedio, grados)):
+    print("\t\t{:10} {:8} {:8} {:8}".format("Alumno " + str(idx+1), nota[0], nota[1], nota[2]), end='')
+    print(" {:8.1f}".format(promedio), end='')
+    print(" {:>6}".format(grado))
+else:
+    print("\nNumero de aprobados: {}/12".format(n_aprobados))
